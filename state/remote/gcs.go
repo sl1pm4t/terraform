@@ -63,13 +63,6 @@ func gcsFactory(conf map[string]string) (Client, error) {
 	}
 
 	accountFilePath, ok := conf["account_file"]
-//	if !ok {
-//		accountFilePath = os.Getenv("GOOGLE_ACCOUNT_FILE")
-//		if accountFilePath == "" {
-//			return nil, fmt.Errorf(
-//				"missing 'account_file' configuration or GOOGLE_ACCOUNT_FILE environment variable")
-//		}
-//	}
 
 	var client 	*http.Client
 	var account accountFile
@@ -121,14 +114,6 @@ func gcsFactory(conf map[string]string) (Client, error) {
 			Scopes:     clientScopes,
 			TokenURL:   "https://accounts.google.com/o/oauth2/token",
 		}
-
-//			conf, err := google.JWTConfigFromJSON(
-//				b,
-//				storage.DevstorageFullControlScope,
-//			)
-//			if err != nil {
-//				log.Fatal(err)
-//			}
 
 		// Initiate an http.Client.
 		client = conf.Client(oauth2.NoContext)
