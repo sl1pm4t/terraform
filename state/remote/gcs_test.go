@@ -18,16 +18,6 @@ func TestGCSClient(t *testing.T) {
 	// It may incur costs, so it will only run if GCS credential environment
 	// variables are present.
 
-//	accountFilePath := os.Getenv("GOOGLE_ACCOUNT_FILE")
-//	if accountFilePath == "" {
-//		t.Skipf("skipping; GOOGLE_ACCOUNT_FILE must be set")
-//	}
-//
-//	regionName := os.Getenv("GOOGLE_REGION")
-//	if regionName == "" {
-//		regionName = "us-central1-a"
-//	}
-
 	projectID := os.Getenv("GOOGLE_PROJECT")
 	if projectID == "" {
 		t.Skipf("skipping; GOOGLE_PROJECT must be set")
