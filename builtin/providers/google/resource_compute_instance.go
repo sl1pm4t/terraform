@@ -475,8 +475,16 @@ func resourceComputeInstanceCreate(d *schema.ResourceData, meta interface{}) err
 			address := d.Get(prefix + ".address").(string)
 			var networkLink, subnetworkLink string
 
-			if networkName != "" && subnetworkName != "" {
-				return fmt.Errorf("Cannot specify both network and subnetwork values.")
+			if subnetworkName != "" {
+				region := getRegionFromZone(d.Get("zone").(string))
+				subnetwork, err := config.clientCompute.Subnetworks.Get(
+					project, region, subnetworkName).Do()
+				if err != nil {
+					return fmt.Errorf(
+						"Error referencing subnetwork '%s' in region '%s': %s",
+						subnetworkName, region, err)
+				}
+				subnetworkLink = subnetwork.SelfLink
 			} else if networkName != "" {
 				network, err := config.clientCompute.Networks.Get(
 					project, networkName).Do()
@@ -487,15 +495,7 @@ func resourceComputeInstanceCreate(d *schema.ResourceData, meta interface{}) err
 				}
 				networkLink = network.SelfLink
 			} else {
-				region := getRegionFromZone(d.Get("zone").(string))
-				subnetwork, err := config.clientCompute.Subnetworks.Get(
-					project, region, subnetworkName).Do()
-				if err != nil {
-					return fmt.Errorf(
-						"Error referencing subnetwork '%s' in region '%s': %s",
-						subnetworkName, region, err)
-				}
-				subnetworkLink = subnetwork.SelfLink
+				return fmt.Errorf("Must specify network or subnetwork value.")
 			}
 
 			// Build the networkInterface

@@ -406,23 +406,8 @@ func buildNetworks(d *schema.ResourceData, meta interface{}) ([]*compute.Network
 			subnetworkName = v.(string)
 		}
 
-		if networkName == "" && subnetworkName == "" {
-			return nil, fmt.Errorf("network or subnetwork must be provided")
-		}
-		if networkName != "" && subnetworkName != "" {
-			return nil, fmt.Errorf("network or subnetwork must not both be provided")
-		}
-
 		var networkLink, subnetworkLink string
-		if networkName != "" {
-			network, err := config.clientCompute.Networks.Get(
-				project, networkName).Do()
-			if err != nil {
-				return nil, fmt.Errorf("Error referencing network '%s': %s",
-					networkName, err)
-			}
-			networkLink = network.SelfLink
-		} else {
+		if subnetworkName != "" {
 			// lookup subnetwork link using region and subnetwork name
 			region, err := getRegion(d, config)
 			if err != nil {
@@ -436,6 +421,16 @@ func buildNetworks(d *schema.ResourceData, meta interface{}) ([]*compute.Network
 					subnetworkName, region, err)
 			}
 			subnetworkLink = subnetwork.SelfLink
+		} else if networkName != "" {
+			network, err := config.clientCompute.Networks.Get(
+				project, networkName).Do()
+			if err != nil {
+				return nil, fmt.Errorf("Error referencing network '%s': %s",
+					networkName, err)
+			}
+			networkLink = network.SelfLink
+		} else {
+			return nil, fmt.Errorf("network or subnetwork must be provided")
 		}
 
 		// Build the networkInterface

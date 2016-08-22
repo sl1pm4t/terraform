@@ -134,11 +134,13 @@ the type is "local-ssd", in which case scratch must be true).
 The `network_interface` block supports:
 
 * `network` - (Optional) The name of the network to attach this interface to.
-    Either `network` or `subnetwork` must be provided.
+    Either `network` or `subnetwork` must be provided. If both `network` and 
+    `subnetwork` are provided then `network` is ignored.
 
 *  `subnetwork` - (Optional) the name of the subnetwork to attach this interface
     to. The subnetwork must exist in the same region this instance will be
-    created in. Either `network` or `subnetwork` must be provided.
+    created in. Either `network` or `subnetwork` must be provided. If both 
+    `network` and `subnetwork` are provided then `network` is ignored.
 
 * `address` - (Optional) The private IP address to assign to the instance. If
     empty, the address will be automatically assigned.
