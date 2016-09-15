@@ -160,7 +160,6 @@ func TestResourceConfigGet(t *testing.T) {
 			Key:   "mapname.0.listkey.0.key",
 			Value: 3,
 		},
-
 		// A map assigned to a list via interpolation should Get a non-existent
 		// value. The test code now also checks that Get doesn't return (nil,
 		// true), which it previously did for this configuration.
@@ -171,7 +170,6 @@ func TestResourceConfigGet(t *testing.T) {
 			Key:   "maplist.0",
 			Value: nil,
 		},
-
 		// FIXME: this is ambiguous, and matches the nested map
 		//        leaving here to catch this behaviour if it changes.
 		{
